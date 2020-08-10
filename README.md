@@ -24,3 +24,25 @@ shuzhao@canyon:~/li.github/mummichog3$ python3 -m mummichog.main -f mummichog/te
 * Annotation is optional
 
 
+## The mummichog suite include
+
+* mummichog(3): core algorithm package for pathway/network analysis
+
+* cloud-mummichog: server and worker (RESTful) implementations
+
+* Azimuth DB: the chemical database for biology, including metabolic models
+
+* metDataModel: data models for metabolomics, used by mummichog and Azimuth DB
+
+* mass2chem: common utilities in interpreting mass spectrometry data, annotation
+
+* massBrowser: visualization using js
+
+
+## Dev notes
+
+metDataModel is renamed from azimuth-metabolomics.
+
+mummichog includes a default metabolic model, but tries to connect to Azimuth DB for latest models.
+
+Message broker is in cloud-mummichog.

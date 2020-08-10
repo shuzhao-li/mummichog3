@@ -1,7 +1,5 @@
 #
-# local vs web
-#
-# message broker?
+# This is local API
+# all web functions are in cloud-mummichog
 
-# database connection??
 
