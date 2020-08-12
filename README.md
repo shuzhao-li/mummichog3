@@ -9,6 +9,23 @@ https://github.com/shuzhao-li/mummichog
 
 This is version 3 under development.
 
+## set up env for development (Python3, using virtualenv on Linux)
+
+sudo apt install python3-dev python3-venv
+
+sudo pip3 install virtualenv
+
+virtualenv env
+
+source env/bin/activate
+
+A few libraries used for mummichog, for example:
+
+(env) $ pip install scipy matplotlib xlsxwriter
+
+(env) $ pip install networkx==1.10
+
+(env) $ deactivate
 
 *To run test:*
 
@@ -24,7 +41,7 @@ shuzhao@canyon:~/li.github/mummichog3$ python3 -m mummichog.main -f mummichog/te
 * Annotation is optional
 
 
-## The mummichog suite include
+## The mummichog suite includes
 
 * mummichog(3): core algorithm package for pathway/network analysis
 
