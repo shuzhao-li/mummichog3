@@ -295,6 +295,11 @@ class EmpiricalCompound:
     and is the compound presentation for Activity network and HTML report.
     
     This class serves as in between user-input MassFetaure and theoretical model Compound.
+
+
+
+    Will update in accordance to and import from
+    https://github.com/shuzhao-li/metDataModel
     
     
     '''

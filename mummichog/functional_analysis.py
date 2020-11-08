@@ -9,20 +9,18 @@
 
 '''
 Pathway, module analysis in mummichog;
-then compute activity network.
-Output includes HTML report, result.html, metabolite data and visualization files for Cytoscape 3.
 
-Major change from version 1 to version 2: using EmpiricalCompound in place of cpd.
-
-Separating I/O, to be used for both web apps and desktop apps
+add pd.dataframe to each class as output format
 
 
-@author: Shuzhao Li, Andrei Todor
+
 '''
 
 import logging
 import random
 import itertools
+
+import pandas as pd
 
 from scipy import stats
 
@@ -59,6 +57,11 @@ class PathwayAnalysis:
     version 2 moved everything into EmpiricalCompound space.
     
     
+    Key output:
+    empCpd2Features = {empCpd: (), ...,}
+    empCpd2Cpds = {empCpd: (), ...,}
+
+
     
     '''
     def __init__(self, pathways, mixedNetwork):
@@ -224,6 +227,7 @@ class PathwayAnalysis:
         for P in self.pathways:
             # use the measured pathway size
             P.overlap_EmpiricalCompounds = P.overlap_features = qset.intersection(P.EmpiricalCompounds)
+
             P.overlap_size = overlap_size = len(P.overlap_EmpiricalCompounds)
             P.EmpSize = ecpd_num = len(P.EmpiricalCompounds)
             if overlap_size > 0:
@@ -253,6 +257,10 @@ class PathwayAnalysis:
         Nominate top cpd for EmpCpd here, i.e.
         in an EmpCpd promoted by a significant massFeature, the cpd candidate is chosen from a significant pathway.
         If more than one cpds are chosen, keep multiple.
+
+
+        ?? where is this used now?
+
         
         '''
         overlap_EmpiricalCompounds = set([])
@@ -272,58 +280,34 @@ class PathwayAnalysis:
         
         return new
                     
-    
-    def plot_model_pvalues(self, outfile='mcg_pathway_modeling'):
+    def to_json(self):
         '''
-        Plot self.permutation_record
-        P.p_EASE for P in self.resultListOfPathways
-        Use -log10 scale, to show upward trend, consistent with other plots
-        '''
-        self.permutation_record.sort()
-        Y_data = [-np.log10(x) for x in self.permutation_record]
-        fig = plt.figure(figsize=(5,4))
-        plt.plot(range(len(Y_data)), Y_data, 'b.')
-        for P in self.resultListOfPathways[:10]:
-            YY = -np.log10(P.p_EASE)
-            plt.plot([0, 0.1*len(Y_data)], [YY, YY], 'r-')
-        
-        plt.ylabel("-log10 (FET p-value)")
-        plt.xlabel("Number of permutation")
-        plt.title("Modeling pathway significance")
-        plt.tight_layout()
-        plt.savefig(outfile+'.pdf')
+        Convert result to dataframes, easy JSON export to be consumed by downstream functions
 
-    
-    def plot_bars_top_pathways(self, outfile='mcg_pathway_barplot'):
-        '''
-        Horizontal barplot of pathways.
-        Also returnin-memory string for web use
-        '''
-        use_pathways = [P for P in self.resultListOfPathways if P.adjusted_p < SIGNIFICANCE_CUTOFF]
-        if len(use_pathways) < 6:
-            use_pathways = self.resultListOfPathways[:6]
-        #plot use_pathways
-        fig, ax = plt.subplots()
-        ylabels = [P.name for P in use_pathways]
-        data = [-np.log10(P.adjusted_p) for P in use_pathways]
-        NN = len(data)
-        ax.barh( range(NN), data, height=0.5, align='center', color="purple", alpha=0.4 )
-        ax.set_yticks(range(NN))
-        ax.set_yticklabels(ylabels)
-        ax.set_xlabel('-log10 p-value')
-        
-        ax.plot([1.301, 1.301], [-0.5, NN], 'g--')    # NN is inverted too
-        #ax.set_ylim(-0.5, NN)
-        
-        ax.invert_yaxis()
-        plt.tight_layout()
-        plt.savefig(outfile+'.pdf')
-        
-        # get in-memory string for web use
-        figdata = BytesIO()
-        plt.savefig(figdata, format='png')
-        return """<img src="data:image/png;base64,{}"/>""".format(base64.encodebytes(figdata.getvalue()).decode()) 
+        dict from cpd to empCpd:
+        self.Compounds_to_EmpiricalCompounds - needs to clean up for pathway specific
+        # 'dicts_cpd2empCpd': self.Compounds_to_EmpiricalCompounds,
 
+        dicts_cpd2empCpd = []
+        for P in self.resultListOfPathways:
+            for E in P.overlap_EmpiricalCompounds:
+                dicts_cpd2empCpd.append ({ E.chosen_compounds: E.EID })
+
+        '''
+        self.collect_hit_Trios()    # force update of overlap_EmpiricalCompounds
+
+        L = []
+        for P in self.resultListOfPathways:
+            L.append({
+                'pathway_id': P.id,
+                'name': P.name, #.encode("utf-8", "ignore"),   # Pathway name not ascii compliant
+                'overlap_size': P.overlap_size,
+                'pathway_size': P.EmpSize,
+                'p-value': P.adjusted_p ,
+                'significant_empCpds': [ E.EID for E in P.overlap_EmpiricalCompounds],
+                'significant_compounds': [";".join(E.chosen_compounds) for E in P.overlap_EmpiricalCompounds],
+            })
+        return L
 
 # --------------------------------------------------------
 #
@@ -561,31 +545,21 @@ class ModularAnalysis:
 
 
 
-    def plot_model_pvalues(self, outfile='mcg_module_modeling.pdf'):
+    def to_json(self):
         '''
-        Plot module activity against self.permuation_mscores
-        
+        JSON export to be consumed by downstream functions
+
+
         '''
-        self.permuation_mscores.sort(reverse=True)
-        NN = len(self.permuation_mscores)
-        fig = plt.figure(figsize=(5,4))
-        plt.plot(range(NN), self.permuation_mscores, 'bo')
-        for M in self.modules_from_significant_features:
-            plt.plot([0, 0.1*NN], [M.A, M.A], 'r-')
-        
-        plt.ylabel("Activity score")
-        plt.xlabel("Number of permutation")
-        plt.title("Modeling module significance")
-        plt.tight_layout()
-        plt.savefig(outfile+'.pdf')
-        
-    
-    def draw_top_modules(self, outfile_prefix='mcg_module_.pdf'):
+        L = []
         for M in self.top_modules:
-            #draw it
-            #
-            pass
-    
+            L.append({
+                'p-value': M.p_value,
+                'edges': [','.join(e) for e in M.graph.edges()],
+                'nodes': M.graph.nodes()
+            })
+        return L
+
     
 # --------------------------------------------------------
 #
@@ -667,3 +641,15 @@ class ActivityNetwork:
             return N.number_of_edges()/float(N.number_of_nodes())
         except:
             return 0
+
+
+    
+    def to_json(self):
+        '''
+        Convert result to dataframes, easy JSON export to be consumed by downstream functions
+
+
+        '''
+
+        return  [','.join(e) for e in self.activity_network.edges()]
+        

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # Copyright (c) 2010-2020 Shuzhao Li.
 # All rights reserved.
 #
@@ -17,20 +16,19 @@ mummichog -
 pathway and network analysis for metabolomics
 
 @author: Shuzhao Li
-
 Online documentation: http://mummichog.org
 
-Refactoring to
-* uncouple data visualization in core package
-* standardize I/O via JSON
 
+
+## dev v3, overhaul 
 
 
 '''
 
+import json
 
 from .functional_analysis import *
-from .report.reporting import *
+from .report.reporting import json_export_all
 
 
 def main():
@@ -63,14 +61,24 @@ def main():
     
     # do activity network
     AN = ActivityNetwork( mixedNetwork, set(PA.collect_hit_Trios() + MA.collect_hit_Trios()) )
-    
-    Local = LocalExporting(mixedNetwork, PA, MA, AN)
-    Local.run()
-    
-    Web = WebReporting(Local, PA, MA, AN)
-    Web.run()
-    
+
+
     print_and_loginfo("\nFinished @ %s\n" %time.asctime())
+
+    #
+    #  This is to export data as Python objects
+    #
+    MCG_JSON = json_export_all(mixedNetwork, PA, MA, AN)
+
+    #print(MCG_JSON)
+    print("\n\n~~~~~~~~~~~~~~~~~~~~\n\n")
+
+    # Use Encoder to convert Python to JSON format 
+    s = json.JSONEncoder().encode(MCG_JSON )
+    print(json.dumps(s,  indent=4))
+
+  
+
 
 
 

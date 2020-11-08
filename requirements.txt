@@ -2,4 +2,5 @@ matplotlib
 networkx==1.10
 numpy
 scipy
+pandas
 xlsxwriter

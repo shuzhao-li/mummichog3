@@ -8,10 +8,17 @@
 # OTHER DEALINGS IN THE SOFTWARE.
 
 '''
-Data input functions in mummichog
-Overall design changed in v2: separating user input from theoretical model.
+v3:
 
-@author: Shuzhao Li
+use pandas dataframe for both user input data and metabolic models
+
+
+
+
+
+
+
+
 
 '''
 import time
@@ -21,10 +28,7 @@ import logging
 
 from io import BytesIO
 
-#
-# to remove dependency from matplotlib in ver 3
-#
-import matplotlib.pyplot as plt
+import pandas as pd
 
 from .config import *
 from .models import *
@@ -117,7 +121,7 @@ def dispatcher():
     '''
     helpstr = '''
     Usage example:
-    python main.py -f mydata.txt -o myoutput
+    python -m mummichog.main -f mydata.txt -o myoutput
     
         -f, --infile: single file as input, 
               containing all features with tab-delimited columns
@@ -173,6 +177,16 @@ class InputUserData:
     
     return ListOfMassFeatures
     self.input_featurelist is "L_sig".
+
+
+
+
+    Changing to pandas.dataframe
+
+
+
+
+
     '''
     
     def __init__(self, paradict, web=False):
@@ -312,57 +326,6 @@ class InputUserData:
 
 
 
-#
-# to move
-#
-
-    def make_manhattan_plots(self, outfile='mcg_MWAS'):
-        '''
-        Manhattan plots of significance vs m/z, rtime.
-        To use with reporting class
-        '''
-        
-        # determine parameters
-        figsize = (6, 3)
-        CutoffLine = -np.log10(self.paradict['cutoff'])
-        sigList = [ f for f in self.ListOfMassFeatures if f.p_value < self.paradict['cutoff'] ]
-        restList = [ f for f in self.ListOfMassFeatures if f.p_value >= self.paradict['cutoff'] ]
-        Y_label = "-log10 p-value"
-        Y_black = [-np.log10(f.p_value) for f in restList]
-        Y_green = [-np.log10(f.p_value) for f in sigList]
-        X_label = ["m/z", "Retention time"]
-        X_black = [ [f.mz for f in restList], [f.retention_time for f in restList] ]
-        X_green = [ [f.mz for f in sigList], [f.retention_time for f in sigList] ]
-        X_max = [self.max_mz, self.max_retention_time]
-        
-        # plot two panels, MWAS on m/z and rtime
-        fig, myaxes = plt.subplots(figsize=figsize, nrows=1, ncols=2)
-        for ii in range(2):
-            
-            myaxes[ii].scatter( X_black[ii], Y_black, s = 5, c='black', linewidths =0, alpha=0.8 )
-            myaxes[ii].scatter( X_green[ii], Y_green, s=5, c='green', linewidths =0, alpha=0.8 )
-            # lines
-            myaxes[ii].plot([0,X_max[ii]], [CutoffLine, CutoffLine], 'g--')
-        
-            myaxes[ii].spines['right'].set_visible(True)
-            myaxes[ii].spines['top'].set_visible(True)
-            myaxes[ii].yaxis.set_ticks_position('both')
-            myaxes[ii].xaxis.set_ticks_position('both')
-            
-            myaxes[ii].set_xlabel(X_label[ii])
-            myaxes[ii].set_ylabel(Y_label)
-            # rotate to avoid overlap xticklabels
-            plt.setp(myaxes[ii].get_xticklabels(), rotation=30, horizontalalignment='right')
-            
-        #plt.title("Feature significance")
-        plt.tight_layout()
-        plt.savefig(outfile+'.pdf')
-        
-        # get in-memory string for web use
-        figdata = BytesIO()
-        plt.savefig(figdata, format='png')
-        return """<img src="data:image/png;base64,{}"/>""".format(base64.encodebytes(figdata.getvalue()).decode()) 
-
 
 
 # metabolicNetwork
@@ -378,7 +341,24 @@ class DataMeetModel:
     when a Compound matched to multiple MassFeatures, split by retention time to EmpiricalCompounds;
     when a Mass Feature matched to multiple Compounds, no need to do anything.
     
-    Default primary ion is enforced, so that for an EmpiricalCompound, primary ion needs to exist before other ions.
+    ??Default primary ion is enforced, so that for an EmpiricalCompound, primary ion needs to exist before other ions.
+
+
+
+
+
+    # Key change to make
+    v3  to separate "annotation"
+
+    Move indexing and query to pandas.dataframe
+
+    Key output:
+    empCpd2Features = {empCpd: (), ...,}
+    empCpd2Cpds = {empCpd: (), ...,}
+
+
+
+
     '''
     def __init__(self, theoreticalModel, userData):
         '''
@@ -658,4 +638,25 @@ class DataMeetModel:
         print ("Got %d final ListOfEmpiricalCompounds" %len(ListOfEmpiricalCompounds))
         return ListOfEmpiricalCompounds
 
-        
+    
+    def to_json(self):
+        '''
+        JSON export to be consumed by downstream functions
+
+        empCpd2Cpds = {empCpd: (), ...,}
+
+        Will update later in accordance to 
+        https://github.com/shuzhao-li/metDataModel
+
+        '''
+
+        empCpd2Features, empCpd2Cpds = {}, {}
+        for E in self.ListOfEmpiricalCompounds:
+            empCpd2Features[E.EID] = E.massfeature_rows
+            empCpd2Cpds[E.EID] = E.compounds
+
+        return {
+            'metabolic_model': self.model.version,
+            'empCpd2Features': empCpd2Features,
+            'empCpd2Cpds': empCpd2Cpds,
+        }
