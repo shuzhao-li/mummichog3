@@ -1,34 +1,56 @@
-# Copyright (c) 2010-2020 Shuzhao Li.
-# All rights reserved.
+# Licensed under the BSD 3-Clause License.
 #
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-# OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-# OTHER DEALINGS IN THE SOFTWARE.
-
-
-'''
-mummichog -
-pathway and network analysis for metabolomics
-
-@author: Shuzhao Li
-Online documentation: http://mummichog.org
-
+# mummichog - pathway and network analysis for metabolomics
+# Online documentation: http://mummichog.org
+#
+#
 
 
 ## dev v3, overhaul 
 
+VERSION = '3.0.3'
+RELEASE = False
+USE_DEBUG = False
 
-'''
+SEARCH_STEPS = 4
+MODULE_SIZE_LIMIT = 100
+SIGNIFICANCE_CUTOFF = 0.05
+MASS_RANGE = (50, 2000)
+
 
 import json
 
-from .functional_analysis import *
+import logging
+import random
+import itertools
+
+import pandas as pd
+
+from scipy import stats
+
+from .io.models import *
+from .io.get_user_data import *
+
+from .algorithms.pathwayAnalysis import PathwayAnalysis
+from .algorithms.modularAnalysis import ModularAnalysis
+from .algorithms.activityNetwork import ActivityNetwork
+
 from .report.reporting import json_export_all
+
+
+fishlogo = '''     
+    --------------------------------------------
+    
+             oO                      ooooooooo
+           oOO   OOOOO  ooooo       ooo oooo
+     oOO   O       ooooo  oooooo ooooo
+    oooO           oooooo         oooo ooooo
+        Oooo   o      OOOOOO   oooo   oooooooo
+            ooooo  oooo      
+                 o
+    
+    --------------------------------------------
+    '''
 
 
 def main():
@@ -75,7 +97,7 @@ def main():
 
     # Use Encoder to convert Python to JSON format 
     s = json.JSONEncoder().encode(MCG_JSON )
-    print(json.dumps(s,  indent=4))
+    print(json.dumps(s,  indent=4)) [:500]
 
   
 

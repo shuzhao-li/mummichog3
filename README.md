@@ -58,8 +58,8 @@ shuzhao@canyon:~/li.github/mummichog3$ python3 -m mummichog.main -f mummichog/te
 
 ## Dev notes
 
-metDataModel is renamed from azimuth-metabolomics.
+Be aware that mummichog (> 3.0.3) imports models from metDataModel and adducts from mass2chem,
 
 mummichog includes a default metabolic model, but tries to connect to Azimuth DB for latest models.
 
-Message broker is in cloud-mummichog.
+Message broker is in cloud-mummichog. Francisco is working on similar functions in mummichog3-api (JAX BitBucket).

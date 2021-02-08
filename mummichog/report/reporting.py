@@ -23,8 +23,6 @@ import logging
 '''
 
 
-from mummichog.config import VERSION, SIGNIFICANCE_CUTOFF
-
 
 def json_export_all(mixedNetwork, PA, MA, AN):
     '''

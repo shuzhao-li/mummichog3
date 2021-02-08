@@ -118,7 +118,7 @@ class module:
         self.modularity_matrix = am
 
 
-class network:
+class ng_network:
     """
     A network is represented as a list of nodes and a list of edges,
     which can then be translated into an adjacency matrix.
