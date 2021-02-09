@@ -8,15 +8,8 @@
 
 ## dev v3, overhaul 
 
-VERSION = '3.0.3'
+VERSION = '3.0.4'
 RELEASE = False
-USE_DEBUG = False
-
-SEARCH_STEPS = 4
-MODULE_SIZE_LIMIT = 100
-SIGNIFICANCE_CUTOFF = 0.05
-MASS_RANGE = (50, 2000)
-
 
 import json
 
@@ -24,9 +17,8 @@ import logging
 import random
 import itertools
 
-import pandas as pd
-
-from scipy import stats
+#import pandas as pd
+#from scipy import stats
 
 from .io.models import *
 from .io.get_user_data import *
@@ -59,7 +51,7 @@ def main():
     print ( "mummichog version %s \n" %VERSION )
     optdict = dispatcher()
 
-    print_and_loginfo("Started @ %s\n" %time.asctime())
+    print("Started @ %s\n" %time.asctime())
     userData = InputUserData(optdict)
     
     #specify which metabolic model 
@@ -85,7 +77,7 @@ def main():
     AN = ActivityNetwork( mixedNetwork, set(PA.collect_hit_Trios() + MA.collect_hit_Trios()) )
 
 
-    print_and_loginfo("\nFinished @ %s\n" %time.asctime())
+    print("\nFinished @ %s\n" %time.asctime())
 
     #
     #  This is to export data as Python objects
@@ -97,13 +89,13 @@ def main():
 
     # Use Encoder to convert Python to JSON format 
     s = json.JSONEncoder().encode(MCG_JSON )
-    print(json.dumps(s,  indent=4)) [:500]
+    with open("mcg_output.json", "w") as O:
+        O.write(s)
+
+    #print(json.dumps(s,  indent=4) [:500])
+    print("JSON output was written in mcg_output.json.")
 
   
-
-
-
-
 
 #
 # -----------------------------------------------------------------------------

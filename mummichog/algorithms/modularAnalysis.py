@@ -8,8 +8,10 @@
 # a) using more generic libraries, e.g. igraph 
 # b) incoporating new algorithms (under development)
 
-
 from .ng_modularity import ng_network, nemo_network
+
+from .base import *
+
 
 class ModularAnalysis:
     '''
@@ -188,9 +190,9 @@ class ModularAnalysis:
         p-value is calculated from CDF.
         Or rank based.
         '''
-        print_and_loginfo("\nNull distribution is estimated on %d random modules" 
+        print("\nNull distribution is estimated on %d random modules" 
                           %len(self.permuation_mscores))
-        print_and_loginfo("User data yield %d network modules" 
+        print("User data yield %d network modules" 
                           %len(self.modules_from_significant_features))
         
         if self.paradict['modeling'] == 'gamma':

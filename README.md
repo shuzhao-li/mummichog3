@@ -36,10 +36,12 @@ shuzhao@canyon:~/li.github/mummichog3$ python3 -m mummichog.main -f mummichog/te
 
 * Metabolic models (via azimuth/)
 
-* Visualization (via report/)
+* Visualization 
 
 * Annotation is optional
 
+Separated out now metDataModel and mass2chem;
+no local output anymore.
 
 ## The mummichog suite includes
 

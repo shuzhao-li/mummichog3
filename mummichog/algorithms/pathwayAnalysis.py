@@ -3,6 +3,8 @@
 # pathway analysis
 #
 
+from .base import *
+
 class PathwayAnalysis:
     '''
     From matched features to pathway enrichment analysis.
@@ -47,7 +49,7 @@ class PathwayAnalysis:
         self.ListOfEmpiricalCompounds = mixedNetwork.ListOfEmpiricalCompounds
         self.total_number_EmpiricalCompounds = len(self.ListOfEmpiricalCompounds)
 
-        print_and_loginfo("\nPathway Analysis...")
+        print("\nPathway Analysis...")
         
         
     def get_pathways(self, pathways):
@@ -86,7 +88,7 @@ class PathwayAnalysis:
         
         '''
         self.permutation_record = []
-        print_and_loginfo("Resampling, %d permutations to estimate background ..." 
+        print("Resampling, %d permutations to estimate background ..." 
                           %num_perm)
         
         # this is feature number not cpd number
@@ -98,7 +100,7 @@ class PathwayAnalysis:
             query_EmpiricalCompounds = set([x[1] for x in random_Trios])
             self.permutation_record += (self.__calculate_p_ermutation_value__(query_EmpiricalCompounds, pathways))
         
-        print_and_loginfo("\nPathway background is estimated on %d random pathway values" 
+        print("\nPathway background is estimated on %d random pathway values" 
                           %len(self.permutation_record))
         
 
@@ -185,7 +187,7 @@ class PathwayAnalysis:
         query_set_size = len(qset)
         total_feature_num = self.total_number_EmpiricalCompounds
         
-        print_and_loginfo("Query number of significant compounds = %d compounds" %query_set_size)
+        print("Query number of significant compounds = %d compounds" %query_set_size)
         
         for P in self.pathways:
             # use the measured pathway size

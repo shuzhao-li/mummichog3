@@ -268,7 +268,7 @@ class LocalExporting:
                                  ]))
         
         
-        #print_and_loginfo("Pathway analysis report was written to \n%s (.tsv and .xlsx)" %outfile)
+        #print("Pathway analysis report was written to \n%s (.tsv and .xlsx)" %outfile)
      
 
 

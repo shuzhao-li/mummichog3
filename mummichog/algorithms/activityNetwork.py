@@ -4,6 +4,9 @@
 # activity network analysis
 #
 
+from .base import *
+
+
 class ActivityNetwork:
     '''
     Tally cpds responsible for significant pathways and modules,
@@ -34,7 +37,7 @@ class ActivityNetwork:
         if nodes:
             sub1 = self.__get_largest_subgraph__(an)
             if sub1.number_of_nodes() > expected_size:
-                print_and_loginfo("\nActivity network was connected in 1 step.")
+                print("\nActivity network was connected in 1 step.")
                 return sub1
             
             else:   # expand 1 or 2 steps
@@ -42,14 +45,14 @@ class ActivityNetwork:
                 new_network = self.__get_largest_subgraph__( nx.from_edgelist(edges) )
                 conn = self.__get_ave_connections__(new_network)
                 if an.number_of_nodes() > MODULE_SIZE_LIMIT or conn > cutoff_ave_conn:
-                    print_and_loginfo("\nActivity network was connected in 2 steps.")
+                    print("\nActivity network was connected in 2 steps.")
                     return new_network
                 else:
                     edges = nx.edges(self.mixedNetwork.model.network, new_network.nodes())
                     new_network = self.__get_largest_subgraph__( nx.from_edgelist(edges) )
                     conn = self.__get_ave_connections__(new_network)
                     if conn > cutoff_ave_conn:
-                        print_and_loginfo("\nActivity network was connected in 3 steps.")
+                        print("\nActivity network was connected in 3 steps.")
                         return new_network
                     else:
                         return an

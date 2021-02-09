@@ -2,8 +2,7 @@ import os
 import logging
 
 # to import from single place
-SEARCH_STEPS = 4
-MODULE_SIZE_LIMIT = 100
+
 SIGNIFICANCE_CUTOFF = 0.05
 MASS_RANGE = (50, 2000)
 
@@ -13,20 +12,15 @@ RETENTION_TIME_TOLERANCE_FRAC = 0.02
 
 
 # packages maintained separately
+# problematic using `pip3 install git+git://github.com/shuzhao-li/mass2chem.git`
+# use pypi instead for both
+# python3 -m pip install metDataModel
 from metDataModel.mummichog import *
 from mass2chem.adducts import *
 
 # temporary: getting JSON models
 from .models import *
 
-
-# to rm this function
-def print_and_loginfo(s):
-    '''
-    Legacy function for logging. This function should retire soon.
-    '''
-    #print s
-    logging.info(s)
 
 class InputUserData:
     '''
@@ -97,7 +91,7 @@ class InputUserData:
                 excluded_list.append( (ii, mz, retention_time) )
         
         if excluded_list:
-            print_and_loginfo( "Excluding %d features out of m/z range %s." %(len(excluded_list), str(MASS_RANGE)) )
+            print( "Excluding %d features out of m/z range %s." %(len(excluded_list), str(MASS_RANGE)) )
 
         
     def read_from_file(self, inputFile):
@@ -109,7 +103,7 @@ class InputUserData:
     def __check_redundant__(self, L):
         redundant = len(L) - len(set(L))
         if redundant > 0:
-            print_and_loginfo( "Your input file contains %d redundant features." %(redundant) )
+            print( "Your input file contains %d redundant features." %(redundant) )
         return L
 
     def read(self):
@@ -124,7 +118,7 @@ class InputUserData:
             self.text_to_ListOfMassFeatures( 
                 open(os.path.join(self.paradict['workdir'], self.paradict['infile'])).read() )
 
-        print_and_loginfo("Read %d features as reference list." %len(self.ListOfMassFeatures))
+        print("Read %d features as reference list." %len(self.ListOfMassFeatures))
     
     
     # more work?
@@ -166,7 +160,7 @@ class InputUserData:
                 
                 self.paradict['cutoff'] = p_hotspots[chosen]
         
-            print_and_loginfo("Automatically choosing (p < %f) as significant cutoff."  %self.paradict['cutoff'])  
+            print("Automatically choosing (p < %f) as significant cutoff."  %self.paradict['cutoff'])  
         
         # mark MassFeature significant
         for f in self.ListOfMassFeatures:
@@ -174,6 +168,6 @@ class InputUserData:
                 f.is_significant = True
         
         self.input_featurelist = [f.row_number for f in self.ListOfMassFeatures if f.is_significant]
-        print_and_loginfo("Using %d features (p < %f) as significant list." 
+        print("Using %d features (p < %f) as significant list." 
                               %(len(self.input_featurelist), self.paradict['cutoff']))  
 

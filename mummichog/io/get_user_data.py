@@ -25,19 +25,12 @@ import sys
 
 from io import BytesIO
 
-import pandas as pd
+# import pandas as pd
 
 # from .config import *
 
 from .userData import *
 
-
-def print_and_loginfo(s):
-    '''
-    Legacy function for logging. This function should retire soon.
-    '''
-    #print s
-    logging.info(s)
 
 #
 # Functions to take command line input
