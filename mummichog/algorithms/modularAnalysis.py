@@ -20,17 +20,20 @@ class ModularAnalysis:
     2) Permutations by randomly selecting features from ref_mzlist;
     compute p-values based on permutations.
     
-    Working on version 2:
     Module analysis will still be in the compound space, as network model is defined by compound edges.
-    
-    
-    Need tracking the mapping btw compound and EmpiricalCompounds
-    
+    Need better tracking the mapping btw compound and EmpiricalCompounds
     
     Tested to add a generator from EmpiricalCompounds to a bunch of combinations, 
     i.e. only one cpd from Ecpd is used at a time towards module analysis
     But it's too slow to be practical.
     
+    ...
+
+    Attributes
+    ----------
+
+    Methods
+    -------
     
     '''
     def __init__(self, mixedNetwork):

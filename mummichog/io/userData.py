@@ -22,6 +22,10 @@ from mass2chem.adducts import *
 from .models import *
 
 
+#
+# this should be based on Experiment class, and organize by peaks - features - empCpds
+#
+
 class InputUserData:
     '''
     

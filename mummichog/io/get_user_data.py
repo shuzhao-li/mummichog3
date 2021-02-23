@@ -160,7 +160,6 @@ def dispatcher():
 
 
 
-
 # metabolicNetwork
 
 class DataMeetModel:
@@ -176,12 +175,8 @@ class DataMeetModel:
     
     ??Default primary ion is enforced, so that for an EmpiricalCompound, primary ion needs to exist before other ions.
 
-
-
-
-
-    # Key change to make
-    v3  to separate "annotation"
+    # Key change to make in v3
+    Move "annotation", i.e., listing empCpd, to separate package, mass2chem
 
     Move indexing and query to pandas.dataframe
 

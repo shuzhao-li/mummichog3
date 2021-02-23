@@ -1,2 +1,3 @@
-# the azimuth module will be replaced by its own separate package
+# metabolic models
+# to do: models to be pulled from the Azimuth DB
 from .JSON_metabolicModels import metabolicModels
