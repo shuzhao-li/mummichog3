@@ -1,22 +1,3 @@
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-# OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-# OTHER DEALINGS IN THE SOFTWARE.
-
-'''
-v3:
-
-use pandas dataframe for both user input data and metabolic models
-
-
-
-
-
-'''
 import time
 import getopt
 import base64
@@ -24,10 +5,6 @@ import logging
 import sys
 
 from io import BytesIO
-
-# import pandas as pd
-
-# from .config import *
 
 from .userData import *
 
@@ -164,21 +141,22 @@ def dispatcher():
 
 class DataMeetModel:
     '''
-    This returns the tracking map btw massFeatures - EmpiricalCompounds - Compounds.
+    # Key change to make in v3
+    Move "annotation", i.e., listing empCpd, to separate package, mass2chem
+    
+    
+    returns the tracking map btw massFeatures - EmpiricalCompounds - Compounds.
 
     Number of EmpiricalCompounds will be used to compute pathway enrichment, and control for module analysis.
     New in v2, but will move to a boutique database in v3.
     
-    many to many matches:
+    N:N matches:
     when a Compound matched to multiple MassFeatures, split by retention time to EmpiricalCompounds;
     when a Mass Feature matched to multiple Compounds, no need to do anything.
     
     ??Default primary ion is enforced, so that for an EmpiricalCompound, primary ion needs to exist before other ions.
 
-    # Key change to make in v3
-    Move "annotation", i.e., listing empCpd, to separate package, mass2chem
 
-    Move indexing and query to pandas.dataframe
 
     Key output:
     empCpd2Features = {empCpd: (), ...,}
@@ -188,14 +166,14 @@ class DataMeetModel:
 
 
     '''
-    def __init__(self, theoreticalModel, userData):
+    def __init__(self, metabolicModel, userData):
         '''
         # from ver 1 to ver 2, major change in .match()
         Trio structure of mapping
         (M.row_number, EmpiricalCompounds, Cpd)
         
         '''
-        self.model = theoreticalModel
+        self.model = metabolicModel
         self.data = userData
         
         # retention time window for grouping, based on fraction of time or ranks

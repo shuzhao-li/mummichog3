@@ -1,32 +1,14 @@
-#
-#
-# pathway analysis
-#
-
 from .base import *
 
 class PathwayAnalysis:
     '''
-    From matched features to pathway enrichment analysis.
-    Using mfn human pathways for now.
+    Pathway enrichment analysis, considering uncertainty in metabolite annotation.
+    
     p-value is from Fisher exact test, 
     adjusted by resampling method in 
     GF Berriz, OD King, B Bryant, C Sander & FP Roth. 
     Characterizing gene sets with FuncAssociate. 
     Bioinformatics 19(18):2502-2504 (2003)
-    
-    "Adjusted_p" is not an accurate term. It's rather an empirical p-value.
-    
-    Note pathway_size is not different from version 1.
-    
-    version 2 moved everything into EmpiricalCompound space.
-    
-    
-    Key output:
-    empCpd2Features = {empCpd: (), ...,}
-    empCpd2Cpds = {empCpd: (), ...,}
-
-
     
     '''
     def __init__(self, pathways, mixedNetwork):
@@ -134,7 +116,8 @@ class PathwayAnalysis:
         EASE score is used as a basis for adjusted p-values,
         as mummichog encourages bias towards more hits/pathway.
         pathways were already updated by first round of Fisher exact test,
-        to avoid redundant calculations
+        to avoid redundant calculations.
+        "Adjusted_p" is not an accurate term. It's rather a permutation based empirical p-value.
         '''
         self.do_permutations(pathways, self.paradict['permutation'])
         

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
   name='mummichog',
-  version='3.0.3',
+  version='3.0.4',
 
   author='Shuzhao Li, Francisco Castellanos, Andrei Todor',
   author_email='shuzhao.li@gmail.com',
@@ -38,6 +38,8 @@ setup(
 
   python_requires='>=3.4',
   install_requires=[
+    'metDataModel',
+    'mass2chem',
     'matplotlib',
     'networkx>=1,<2',
     'numpy',

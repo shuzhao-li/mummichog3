@@ -16,6 +16,11 @@ RETENTION_TIME_TOLERANCE_FRAC = 0.02
 # use pypi instead for both
 # python3 -m pip install metDataModel
 from metDataModel.mummichog import *
+
+# -> metabolicNetwork 
+# will use metDataModel.derived.metabolicModel
+
+
 from mass2chem.adducts import *
 
 # temporary: getting JSON models

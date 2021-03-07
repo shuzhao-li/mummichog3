@@ -1,41 +1,15 @@
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-# OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-# OTHER DEALINGS IN THE SOFTWARE.
-
 '''
-
-Return analysis result in pd.dataframe
-
-to obj or
-to JSON
-
-
 import csv
 import xlsxwriter
 import logging
 
-
 '''
-
-
 
 def json_export_all(mixedNetwork, PA, MA, AN):
     '''
     pd.DataFrame is not a good option here as most results are nested dictionaries and lists.
-
     metabolic model is already in JSON, but need clean up.
-
     '''
-    # this is theoreticalModel
-    # self.model = mixedNetwork.model
-    # this is userData
-    # self.data = mixedNetwork.data
-
     return {
         'EmpiricalCompounds': mixedNetwork.to_json(),
         'pathway_analysis': PA.to_json(),     #force_ascii=True),
@@ -43,8 +17,6 @@ def json_export_all(mixedNetwork, PA, MA, AN):
         'activity_network': AN.to_json(),
     }
     
-
-
 
 
 # Not used below for now

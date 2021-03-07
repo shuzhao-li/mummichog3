@@ -62,24 +62,39 @@ Compounds are looked up in a table for attributes (name, neutral_base_mass, form
 
 Pathways are defined by a set of reactions.
 
-Networks 
+There's only one global network, connected by all reactions. 
+Modules are sub-networks defined by a property, e.g. enrichment in an experiment.
+
 
 ## Mummichog output
 
 including significant/enriched pathways, network modules and one activity network.
 
-### pathway result
+Will box in a new class mummichogResult.
+
+
+- pathway result
 
 refer to current pathway result table.
 
-### module result
+- network result, including module result and activity network
 
 refer to current module result table.
-
-### activity network
-
 refer to current activity network result table.
 
-### mapping of empCpds to Cpds, with probablistic update
+- mapping of empCpds to Cpds, with probablistic update
 
 To be updated.
+A list from cpd->empCpd, 
+and updated empCpd annotation by mummichog.
+
+
+
+
+
+
+
+
+
+
+

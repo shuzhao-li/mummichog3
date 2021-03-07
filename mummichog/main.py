@@ -8,7 +8,7 @@
 
 ## dev v3, overhaul 
 
-VERSION = '3.0.4'
+VERSION = '3.0.5'
 RELEASE = False
 
 import json
@@ -20,7 +20,7 @@ import itertools
 #import pandas as pd
 #from scipy import stats
 
-from .io.models import *
+from .io.models import get_metabolic_model
 from .io.get_user_data import *
 
 from .algorithms.pathwayAnalysis import PathwayAnalysis
@@ -54,15 +54,7 @@ def main():
     print("Started @ %s\n" %time.asctime())
     userData = InputUserData(optdict)
     
-    #specify which metabolic model 
-    if userData.paradict['network'] in ['human', 'hsa', 'Human', 'human_mfn', 'hsa_mfn', '']:
-        theoreticalModel = metabolicNetwork(metabolicModels[ 'human_model_mfn' ])
-    elif userData.paradict['network'] in ['worm', 'C. elegans', 'icel1273', 'Caenorhabditis elegans']:
-        theoreticalModel = metabolicNetwork(metabolicModels[ 'worm_model_icel1273' ])
-        
-    else:
-        raise KeyError( "Unsupported species/model. Pls contact author." )
-    
+    theoreticalModel = get_metabolic_model( userData.paradict['network'] )
     mixedNetwork = DataMeetModel(theoreticalModel, userData)
 
     # getting a list of Pathway instances, with p-values, in PA.resultListOfPathways
