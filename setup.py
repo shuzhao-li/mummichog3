@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
   name='mummichog',
-  version='3.0.4',
+  version='3.0.5',
 
   author='Shuzhao Li, Francisco Castellanos, Andrei Todor',
   author_email='shuzhao.li@gmail.com',

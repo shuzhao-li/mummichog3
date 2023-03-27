@@ -64,8 +64,7 @@ class ModularAnalysis:
         
         '''
         s = "\nModular Analysis, using %d permutations ..." %self.paradict['permutation']
-        #print s
-        logging.info(s)
+        print (s)
         self.modules_from_significant_features = self.run_analysis_real()
         self.permuation_mscores = self.do_permutations(self.paradict['permutation'])
 
