@@ -1,13 +1,16 @@
 from setuptools import setup, find_packages
 
-with open("README.md", "r") as fh:
+with open("mummichog/__init__.py") as f:
+    exec([x for x in f.readlines() if '__version__' in x][0])
+
+with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
   name='mummichog',
-  version='3.0.5',
+  version=__version__,
 
-  author='Shuzhao Li, Francisco Castellanos, Andrei Todor',
+  author='Shuzhao Li',
   author_email='shuzhao.li@gmail.com',
   description='Pathway and network analysis for metabolomics data',
   long_description=long_description,
@@ -41,7 +44,7 @@ setup(
     'metDataModel',
     'mass2chem',
     'matplotlib',
-    'networkx>=1,<2',
+    'networkx',
     'numpy',
     'scipy',
     'xlsxwriter',

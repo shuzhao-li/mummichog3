@@ -1,6 +1,4 @@
-matplotlib
-networkx==1.10
+networkx
 numpy
 scipy
-pandas
 xlsxwriter
