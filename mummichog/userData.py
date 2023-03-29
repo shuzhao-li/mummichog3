@@ -1,4 +1,14 @@
 '''
+
+0) JMS converts a JSON metabolic model to metabolicModels
+
+1) JMS treats a metabolic model as a database, via KCD
+2) JMS converts a list of features to empCpds in EED
+3) return EED.dict_empCpds
+
+
+
+
 from jms.modelConvert import convert_json_model
 from jms.empiricalCpds import load_epds_from_json
 
@@ -32,11 +42,12 @@ from .parameters import adduct_search_patterns, \
 import os
 import logging
 
-from metDataModel.mummichog import metabolicNetwork
-from mass2chem.adducts import *
+# from mass2chem.adducts import *
+
+
 from .parameters import *
 
-from .io.JSON_metabolicModels import metabolicModels  
+from ._metabolic_models import metabolicModels  
 
 
 def get_metabolic_model(model):
@@ -45,6 +56,47 @@ def get_metabolic_model(model):
     '''
 
     return metabolicNetwork(metabolicModels[ 'human_model_mfn' ])
+
+
+class metabolicNetwork:
+    '''
+    Metabolite-centric metabolic model 
+    Theoretical model, not containing user data
+
+    This is from # from metDataModel.mummichog import metabolicNetwork
+
+
+    '''
+    def __init__(self, MetabolicModel):
+        '''
+        Initiation of metabolic network model.
+        Building Compound index.
+        Parsing input files.
+        Matching m/z - Compound.
+        
+        MetabolicModel['Compounds'] are subset of cpds in network/pathways with mw.
+        Not all in total_cpd_list has mw.
+        '''
+        #print_and_loginfo( "Loading metabolic network %s..." %MetabolicModel.version ) # version from metabolic model
+        
+        self.MetabolicModel = MetabolicModel
+        self.network = self.build_network(MetabolicModel['cpd_edges'])
+        
+        self.version = MetabolicModel['version']
+        self.Compounds = MetabolicModel['Compounds']
+        self.metabolic_pathways = MetabolicModel['metabolic_pathways']
+        self.dict_cpds_def = MetabolicModel['dict_cpds_def']
+        self.cpd2pathways = MetabolicModel['cpd2pathways']
+        self.edge2enzyme = MetabolicModel['edge2enzyme']
+        self.total_cpd_list = self.network.nodes()
+        
+        
+    def build_network(self, edges):
+        return nx.from_edgelist( edges )
+        
+
+    def get_pathways(self):
+        pass
 
 
 #
@@ -218,6 +270,8 @@ class DataMeetModel:
     changing in v3
 
     TrioList is no longer relevant
+
+    Changing both metabolic models and expt data to center on neutral mass (formula)
 
     '''
     def __init__(self, metabolicModel, userData):
