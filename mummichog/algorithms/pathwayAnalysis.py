@@ -1,4 +1,5 @@
-from .base import *
+from scipy import stats
+
 
 class PathwayAnalysis:
     '''

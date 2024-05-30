@@ -3,14 +3,10 @@
 #
 # module analysis
 #
+import networkx as nx
 
-# The modularity algorithms will be updated by
-# a) using more generic libraries, e.g. igraph 
-# b) incoporating new algorithms (under development)
-
-from .ng_modularity import ng_network, nemo_network
-
-from .base import *
+SEARCH_STEPS = 4
+MODULE_SIZE_LIMIT = 100
 
 
 class ModularAnalysis:

@@ -88,3 +88,12 @@ To be updated.
 A list from cpd->empCpd, 
 and updated empCpd annotation by mummichog.
 
+
+
+## References
+
+
+ClassyFire - https://jcheminf.biomedcentral.com/articles/10.1186/s13321-016-0174-y
+
+ChemRICH - https://www.nature.com/articles/s41598-017-15231-w
+
