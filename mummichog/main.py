@@ -1,23 +1,17 @@
 # Licensed under the BSD 3-Clause License.
 #
 # mummichog - pathway and network analysis for metabolomics
-# Online documentation: http://mummichog.org
-#
 #
 
 ## dev v3, overhaul 
 
-
+import time
+import getopt
+import sys
 import json
 from mummichog import __version__
 
-from .userData import *
-from .algorithms.pathwayAnalysis import PathwayAnalysis
-from .algorithms.modularAnalysis import ModularAnalysis
-from .algorithms.activityNetwork import ActivityNetwork
-
-from .report.reporting import json_export_all
-
+from .api import *
 
 fishlogo = '''     
     --------------------------------------------
@@ -33,13 +27,14 @@ fishlogo = '''
     --------------------------------------------
     '''
 
-import time
-import getopt
-import sys
+
 
 #
 # Functions to take command line input
 #
+
+# to switch to argparse
+
 
 def cli_options(opts):
     '''

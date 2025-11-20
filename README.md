@@ -4,10 +4,61 @@ Mummichog 3 dev
 Mummichog is a Python program for analyzing data from high throughput, untargeted metabolomics.
 It leverages the organization of metabolic networks to predict functional activity directly from feature tables,
 bypassing metabolite identification. The version 2 is hosted at:
-
 https://github.com/shuzhao-li/mummichog
 
 This is version 3 under development.
+
+## Input and Output
+
+Input:
+1. User supplied features with m/z, rtime, p-value from a statistical test. If no unique feature ID is supplied, row_number will be used as ID.
+2. [Optional] Annotation table on the features. 
+3. [Optional] Metabolic model to use. Default and optional models are provided by mummichog. Default in JSON (option for web app preload). 
+
+Annotation can be from authentic standards and MS/MS. We use metDataModel to structure annotation. One can use JMS to perform annotation on a dataset. 
+
+The format of a metabolic model contains list_of_pathways, list_of_reactions and list_of_compounds. Some indexing and calculation on chemical formulas are involved in testing the match to metabolomic data patterns. Pathway definition may not be available in some models. "Subsystem" could be a substitute. 
+
+The compound identifiers need to align with other data. This should be taken care of in mummichog supplied models. For developers, a translation module is needed. 
+
+Outpout are 
+1. Result tables and figures, result.html as ver 2.
+2. JSON strings from pathway analysis and network module analysis for programmatic use.
+
+There's a separate repository for web-based mummichog tool, which handles UI and result visualization. 
+
+## Planning
+
+1. Move project to https://github.com/metabolomics-cloud, like https://scverse.org/
+
+2. New test datasets 
+
+3. Milestone 3.1: Support of N metabolic models in JSON
+
+4. Milestone 3.2: Run with new annotation formats, backward compatible and user-supplied annotation is optional
+
+Azimuth DB should be renamed Mummichog DB?
+
+Francisco and YC deployed web mummichog apps. Let's keep this as core package, with minimal dependency. 
+
+
+---
+Old text -
+
+## The mummichog suite includes
+
+* mummichog(3): core algorithm package for pathway/network analysis
+
+* cloud-mummichog: server and worker (RESTful) implementations
+
+* Azimuth DB: the chemical database for biology, including metabolic models
+
+* metDataModel: data models for metabolomics, used by mummichog and Azimuth DB
+
+* mass2chem: common utilities in interpreting mass spectrometry data, annotation
+
+* massBrowser: visualization using js (code reusable from CSM and mummichog web app)
+
 
 ## set up env for development (Python3, using virtualenv on Linux)
 
@@ -23,7 +74,7 @@ A few libraries used for mummichog, for example:
 
 (env) $ pip install scipy matplotlib xlsxwriter
 
-(env) $ pip install networkx==1.10
+(env) $ pip install networkx==1.10 # v2 okay now?
 
 (env) $ deactivate
 
@@ -32,36 +83,3 @@ A few libraries used for mummichog, for example:
 shuzhao@canyon:~/li.github/mummichog3$ python3 -m mummichog.main -f mummichog/tests/testdata0710.txt -o t3
 
 
-## Separating out of core package 
-
-* Metabolic models (via azimuth/)
-
-* Visualization 
-
-* Annotation is optional
-
-Separated out now metDataModel and mass2chem;
-no local output anymore.
-
-## The mummichog suite includes
-
-* mummichog(3): core algorithm package for pathway/network analysis
-
-* cloud-mummichog: server and worker (RESTful) implementations
-
-* Azimuth DB: the chemical database for biology, including metabolic models
-
-* metDataModel: data models for metabolomics, used by mummichog and Azimuth DB
-
-* mass2chem: common utilities in interpreting mass spectrometry data, annotation
-
-* massBrowser: visualization using js
-
-
-## Dev notes
-
-Be aware that mummichog (> 3.0.3) imports models from metDataModel and adducts from mass2chem,
-
-mummichog includes a default metabolic model, but tries to connect to Azimuth DB for latest models.
-
-Message broker is in cloud-mummichog. Francisco is working on similar functions in mummichog3-api (JAX BitBucket).

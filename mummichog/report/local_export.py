@@ -8,7 +8,7 @@ but can be optionally used in local and in Jupyter Notebook applications
 '''
 
 import os
-
+import csv
 
 from .websnippets import *
 

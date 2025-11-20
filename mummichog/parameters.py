@@ -1,58 +1,10 @@
-'''
-
-not used, but will
-
-Default templates of parameters
+'''Mummichog parameter templates
+in progress
 
 
-
-'''
-
-
-SIGNIFICANCE_CUTOFF = 0.05
-MASS_RANGE = (50, 2000)
-
-# fraction of total retention time, or of ranks of retention time
-# used to determine coelution of ions ad hoc
-RETENTION_TIME_TOLERANCE_FRAC = 0.02    
-
-
-
-
-user_parameters = {
-               'network': 'human_mfn',
-               'mode': 'pos_default',
-               'instrument': 'unspecified',
-}
-
-algorithm_parameters = {
-               'cutoff': 0,
-               
-               'modeling': None,
-               
-
-               'force_primary_ion': True,
-               
-               'workdir': '',
-               'input': '',
-               'reference': '',
-               'infile': '',
-               'output': '',
-               'permutation': 100,
-               'outdir': 'mcgresult',
-}
-
-paradict = {
-    **user_parameters, **algorithm_parameters
-}
-
-
-
-#
-# From khipu.utils. Placed here so that people can customize within asari.
-#
-PROTON = 1.00727646677
-electron = 0.000549
+Will remove adduct calculation in mummichog. 
+Do primary ions only.
+Pre-annotation will be based on khipu.
 
 # avoid confusing adducts in initial search, e.g. H, H2O
 adduct_search_patterns = [  # initial patterns are relative to M+H+
@@ -101,5 +53,47 @@ extended_adducts = [(1.0078, 'H'),
                             (97.96737927, 'H2SO4'),
                             (97.97689507, 'H3PO4'),
 ]
+
+'''
+
+PROTON = 1.00727646677
+electron = 0.000549
+
+SIGNIFICANCE_CUTOFF = 0.05
+MASS_RANGE = (50, 2000)
+
+# fraction of total retention time, or of ranks of retention time
+# used to determine coelution of ions ad hoc
+RETENTION_TIME_TOLERANCE_FRAC = 0.02    
+
+
+
+
+user_parameters = {
+               'network': 'human_mfn',
+               'mode': 'pos_default',
+               'instrument': 'unspecified',
+}
+
+algorithm_parameters = {
+               'cutoff': 0,
+               
+               'modeling': None,
+               
+
+               'force_primary_ion': True,
+               
+               'workdir': '',
+               'input': '',
+               'reference': '',
+               'infile': '',
+               'output': '',
+               'permutation': 100,
+               'outdir': 'mcgresult',
+}
+
+paradict = {
+    **user_parameters, **algorithm_parameters
+}
 
 

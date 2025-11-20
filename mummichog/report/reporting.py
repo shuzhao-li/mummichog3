@@ -7,7 +7,6 @@ import logging
 
 def json_export_all(mixedNetwork, PA, MA, AN):
     '''
-    pd.DataFrame is not a good option here as most results are nested dictionaries and lists.
     metabolic model is already in JSON, but need clean up.
     '''
     return {

@@ -37,6 +37,32 @@ from .parameters import adduct_search_patterns, \
         # EED.dict_empCpds misses some features 
         EED.dict_empCpds = self.append_orphans_to_epmCpds(EED.dict_empCpds)
 
+
+ [{'feature': {'rtime': 25.07, 'mz': 85.0647, 'id': 'F45'},
+   'lib': [{'id': 'row199',
+     'name': 'Cyclopentanone',
+     'mz': 85.064791478,
+     'rtime': 26.4}],
+   'ms2': {},
+   'csm': {}},
+  {'feature': {'rtime': 191.32, 'mz': 85.0884, 'id': 'F65'},
+   'lib': [],
+   'ms2': {},
+   'csm': {'name': 'piperidino',
+    'mz': 85.0884,
+    'rtime': 191.32,
+    'ion_relation': nan,
+    'empCpd_id': nan}},
+  {'feature': {'rtime': 24.02, 'mz': 85.101, 'id': 'F66'},
+   'lib': [],
+   'ms2': {},
+   'csm': {'name': 'Cyclohexane',
+    'mz': 85.101,
+    'rtime': 24.02,
+    'ion_relation': nan,
+    'empCpd_id': nan}}]
+    
+    
 '''
 
 import os
@@ -106,7 +132,9 @@ class metabolicNetwork:
 class InputUserData:
     '''
     
-    Changing to JSON list of features and list of epds
+    Changing in v3
+    need to field 
+    JSON list of features and list of epds
 
 
     '''
