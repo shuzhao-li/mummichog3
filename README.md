@@ -17,9 +17,16 @@ Input:
 
 Annotation can be from authentic standards and MS/MS. We use metDataModel to structure annotation. One can use JMS to perform annotation on a dataset. 
 
-The format of a metabolic model contains list_of_pathways, list_of_reactions and list_of_compounds. Some indexing and calculation on chemical formulas are involved in testing the match to metabolomic data patterns. Pathway definition may not be available in some models. "Subsystem" could be a substitute. 
+The format of a metabolic model contains list_of_pathways, list_of_reactions and list_of_compounds. 
+We need chemical formulas of the compounds, which may not be available in a GSMM. 
+- If compound formulas are provided in a model, be sure to have correct neutral mass and not a salt format. Salts are formed in both biological systems and in mass spectrometry. We use neutral formula to calculate adducts in mass spec, which includes salts. 
+- If formulas are not provided in a model, we need to look them up via compound identifiers.
+- The compound identifiers need to align with other data. This should be taken care of in mummichog supplied models. For developers, a translation module is needed. 
 
-The compound identifiers need to align with other data. This should be taken care of in mummichog supplied models. For developers, a translation module is needed. 
+Some indexing and calculation on chemical formulas are involved in testing the match to metabolomic data patterns. Pathway definition may not be available in some models. "Subsystem" could be a substitute. 
+Example of model conversion in:
+- https://github.com/shuzhao-li/mummichog/blob/master/mummichog/models.py
+- https://github.com/shuzhao-li-lab/JMS/tree/main/notebooks
 
 Outpout are 
 1. Result tables and figures, result.html as ver 2.

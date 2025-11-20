@@ -1,3 +1,6 @@
+# Module/community finding algorithms using networkx community functions
+# Switched to networkx built-in functions since mummichog 2.7. No longer requires nx=1.x
+
 import networkx as nx
 
 def find_communities(G, method='louvain'):
