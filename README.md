@@ -3,10 +3,13 @@ Mummichog 3 dev
 
 Mummichog is a Python program for analyzing data from high throughput, untargeted metabolomics.
 It leverages the organization of metabolic networks to predict functional activity directly from feature tables,
-bypassing metabolite identification. The version 2 is hosted at:
-https://github.com/shuzhao-li/mummichog
+bypassing metabolite identification. 
+
+The last of version 2 is under branch mummichog-2.7.
 
 This is version 3 under development.
+
+Project is moved to new organization https://github.com/metabolomics-cloud, to follow examples of https://scverse.org/
 
 ## Input and Output
 
@@ -36,7 +39,7 @@ There's a separate repository for web-based mummichog tool, which handles UI and
 
 ## Planning
 
-1. Move project to https://github.com/metabolomics-cloud, like https://scverse.org/
+1. Moved 
 
 2. New test datasets 
 
@@ -44,7 +47,7 @@ There's a separate repository for web-based mummichog tool, which handles UI and
 
 4. Milestone 3.2: Run with new annotation formats, backward compatible and user-supplied annotation is optional
 
-Azimuth DB should be renamed Mummichog DB?
+Azimuth DB should be renamed Mummichog DB.
 
 Francisco and YC deployed web mummichog apps. Let's keep this as core package, with minimal dependency. 
 
@@ -67,6 +70,11 @@ Old text -
 * massBrowser: visualization using js (code reusable from CSM and mummichog web app)
 
 
+
+
+
+
+
 ## set up env for development (Python3, using virtualenv on Linux)
 
 sudo apt install python3-dev python3-venv
@@ -79,9 +87,7 @@ source env/bin/activate
 
 A few libraries used for mummichog, for example:
 
-(env) $ pip install scipy matplotlib xlsxwriter
-
-(env) $ pip install networkx==1.10 # v2 okay now?
+(env) $ pip install scipy matplotlib xlsxwriter networkx
 
 (env) $ deactivate
 

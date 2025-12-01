@@ -4,7 +4,7 @@
 # activity network analysis
 #
 
-from .base import *
+import networkx as nx
 
 
 class ActivityNetwork:
